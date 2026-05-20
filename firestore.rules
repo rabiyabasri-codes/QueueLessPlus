@@ -16,6 +16,10 @@ service cloud.firestore {
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    function onlyQueueCountChanged() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['currentCount']);
+    }
+
     // ── Users Collection ──────────────────────────────────────────────────
     // Users can read/write their own profile; admins can read all
     match /users/{userId} {
@@ -30,7 +34,7 @@ service cloud.firestore {
     match /queues/{queueId} {
       allow read:   if isLoggedIn();
       allow create: if isAdmin();
-      allow update: if isAdmin();
+      allow update: if isAdmin() || (isLoggedIn() && onlyQueueCountChanged());
       allow delete: if isAdmin();
     }
 
@@ -70,10 +74,23 @@ service cloud.firestore {
       allow read: if isLoggedIn() &&
                     (resource.data.userId == request.auth.uid || isAdmin());
       allow create: if isLoggedIn() &&
-                    request.resource.data.userId == request.auth.uid;
+                    (request.resource.data.userId == request.auth.uid || isAdmin());
       allow update: if isLoggedIn() &&
                     (resource.data.userId == request.auth.uid || isAdmin());
       allow delete: if isAdmin();
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if isLoggedIn();
+      allow create: if isLoggedIn() &&
+                    request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /chat/{messageId} {
+      allow read: if isLoggedIn();
+      allow create: if isLoggedIn();
+      allow update, delete: if isAdmin();
     }
   }
 }

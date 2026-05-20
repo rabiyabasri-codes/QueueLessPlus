@@ -169,8 +169,15 @@ class UserStatusActivity : AppCompatActivity() {
             "Order: ${if (entry.orderDetails.isEmpty()) "Not placed" else entry.orderDetails}"
 
         // 📦 Status
-        binding.tvOrderStatus.text =
-            "Status: ${entry.orderStatus.uppercase()}"
+        if (entry.status == QueueEntry.STATUS_COMPLETED || entry.orderStatus == QueueEntry.ORDER_COMPLETED) {
+            binding.tvOrderStatus.text = "Status: Completed and received"
+            binding.btnOrder.isEnabled = false
+        } else {
+            binding.tvOrderStatus.text = "Status: ${entry.orderStatus.uppercase()}"
+            binding.btnOrder.isEnabled = true
+        }
+
+        binding.btnOrder.text = if (entry.orderDetails.isBlank()) "Place Order" else "Update Order"
 
         // 🔳 Generate QR
         generateQR(entry.entryId)

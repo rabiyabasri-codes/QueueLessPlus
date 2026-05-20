@@ -8,11 +8,10 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardMessage"
+        style="@style/QueueLess.Card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,7 +26,7 @@
                 android:id="@+id/tvSender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/primary"
+                android:textColor="@color/colorPrimary"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="John Doe" />

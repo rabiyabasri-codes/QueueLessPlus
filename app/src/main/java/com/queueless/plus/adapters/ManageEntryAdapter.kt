@@ -1,6 +1,7 @@
 package com.queueless.plus.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -31,53 +32,57 @@ class ManageEntryAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(entry: QueueEntry, position: Int) {
-
-            // 🟢 Position + Name
             binding.tvPosition.text = "#$position"
             binding.tvUserName.text = entry.userName
 
-            // 🍔 Order Details
-            val orderText = if (entry.orderDetails.isBlank()) {
-                "Not placed"
-            } else entry.orderDetails
+            val hasOrder = entry.orderDetails.isNotBlank() || entry.orderId.isNotBlank()
+            val orderText = if (entry.orderDetails.isBlank()) "Not placed" else entry.orderDetails
+            val statusText = entry.orderStatus.replaceFirstChar { it.uppercase() }
 
             binding.tvOrder.text = "Order: $orderText"
-
-            // 🔥 Order Status (formatted)
-            val statusText = entry.orderStatus.replaceFirstChar { it.uppercase() }
             binding.tvStatus.text = "Status: $statusText"
+            binding.btnServed.text = "Completed"
 
-            // 🟢 Queue Actions
+            binding.btnPreparing.visibility = if (hasOrder) View.VISIBLE else View.GONE
+            binding.btnReady.visibility = if (hasOrder) View.VISIBLE else View.GONE
+            binding.btnServed.visibility = if (hasOrder) View.VISIBLE else View.GONE
+
+            binding.btnPreparing.setOnClickListener { onPreparing(entry) }
+            binding.btnReady.setOnClickListener { onReady(entry) }
             binding.btnServed.setOnClickListener { onServed(entry) }
             binding.btnRemove.setOnClickListener { onRemove(entry) }
 
-            // 🔥 Order Actions
-            binding.btnPreparing.setOnClickListener { onPreparing(entry) }
-            binding.btnReady.setOnClickListener { onReady(entry) }
-
-            // 🚀 SMART UI CONTROL (IMPORTANT)
             when (entry.orderStatus) {
-
                 QueueEntry.ORDER_WAITING -> {
-                    binding.btnPreparing.isEnabled = true
+                    binding.btnPreparing.isEnabled = hasOrder
                     binding.btnReady.isEnabled = false
+                    binding.btnServed.isEnabled = false
                 }
-
                 QueueEntry.ORDER_PREPARING -> {
                     binding.btnPreparing.isEnabled = false
-                    binding.btnReady.isEnabled = true
+                    binding.btnReady.isEnabled = hasOrder
+                    binding.btnServed.isEnabled = false
                 }
-
                 QueueEntry.ORDER_READY -> {
                     binding.btnPreparing.isEnabled = false
                     binding.btnReady.isEnabled = false
+                    binding.btnServed.isEnabled = hasOrder
+                }
+                QueueEntry.ORDER_COMPLETED -> {
+                    binding.btnPreparing.isEnabled = false
+                    binding.btnReady.isEnabled = false
+                    binding.btnServed.isEnabled = false
+                }
+                else -> {
+                    binding.btnPreparing.isEnabled = hasOrder
+                    binding.btnReady.isEnabled = false
+                    binding.btnServed.isEnabled = false
                 }
             }
         }
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<QueueEntry>() {
-
         override fun areItemsTheSame(old: QueueEntry, new: QueueEntry): Boolean {
             return old.entryId == new.entryId
         }

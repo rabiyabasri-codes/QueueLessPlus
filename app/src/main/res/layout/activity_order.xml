@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:title="Order Food 🍔"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 📜 Content -->
@@ -39,6 +39,7 @@
             android:layout_marginBottom="8dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/QueueLess.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
@@ -62,7 +63,7 @@
             android:text="Payment Method"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorTextPrimary"
             android:layout_marginBottom="8dp" />
 
         <RadioGroup
@@ -117,17 +118,17 @@
             android:text="Total: ₹0"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorTextPrimary"
             android:gravity="end"
             android:layout_marginBottom="12dp"/>
 
         <!-- 🍔 Place Order -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPlaceOrder"
+            style="@style/QueueLess.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Place Order 🍔"
-            app:cornerRadius="12dp"/>
+            android:text="Place Order 🍔"/>
 
     </LinearLayout>
 

@@ -74,6 +74,12 @@
             android:name=".activities.OrderHistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity

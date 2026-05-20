@@ -130,17 +130,32 @@ object FirestoreRepository {
         return docRef.id
     }
 
+    suspend fun updateOrder(order: Order) {
+        if (order.orderId.isBlank()) return
+        ordersRef.document(order.orderId).set(order).await()
+    }
+
     suspend fun getOrdersForUser(userId: String): List<Order> {
         val snap = ordersRef
             .whereEqualTo("userId", userId)
-            .orderBy("timestamp", Query.Direction.DESCENDING)
             .get()
             .await()
         return snap.toObjects(Order::class.java)
+            .sortedByDescending { it.timestamp }
     }
 
     suspend fun updateOrderStatus(orderId: String, status: String) {
         ordersRef.document(orderId).update("status", status).await()
+    }
+
+    suspend fun getOrderById(orderId: String): Order? {
+        val snap = ordersRef.document(orderId).get().await()
+        return if (snap.exists()) snap.toObject(Order::class.java) else null
+    }
+
+    suspend fun getOrderForEntry(entryId: String): Order? {
+        val entry = getQueueEntryById(entryId) ?: return null
+        return if (entry.orderId.isNotBlank()) getOrderById(entry.orderId) else null
     }
 
     suspend fun attachOrderToEntry(entryId: String, orderId: String) {
@@ -149,13 +164,18 @@ object FirestoreRepository {
             .await()
     }
 
+    suspend fun getQueueEntryById(entryId: String): QueueEntry? {
+        val snap = queueEntriesRef.document(entryId).get().await()
+        return if (snap.exists()) snap.toObject(QueueEntry::class.java) else null
+    }
+
     // ═════════ QUEUE ENTRY ═════════
 
     suspend fun joinQueue(entry: QueueEntry): String {
         val docRef = queueEntriesRef.document()
         val newEntry = entry.copy(entryId = docRef.id)
         docRef.set(newEntry.toMap()).await()
-        incrementQueueCount(entry.queueId, 1)
+        runCatching { incrementQueueCount(entry.queueId, 1) }
         return docRef.id
     }
 
@@ -250,8 +270,8 @@ object FirestoreRepository {
             entry.status != QueueEntry.STATUS_WAITING &&
                 status == QueueEntry.STATUS_WAITING
 
-        if (leavingWaitingState) incrementQueueCount(entry.queueId, -1)
-        if (returningToWaitingState) incrementQueueCount(entry.queueId, 1)
+        if (leavingWaitingState) runCatching { incrementQueueCount(entry.queueId, -1) }
+        if (returningToWaitingState) runCatching { incrementQueueCount(entry.queueId, 1) }
     }
 
     suspend fun markEntryNotified(entryId: String) {
@@ -273,9 +293,16 @@ object FirestoreRepository {
     // ═════════ ORDER SYSTEM ═════════
 
     suspend fun updateQueueEntryOrderStatus(entryId: String, status: String) {
+        val entry = getQueueEntryById(entryId)
+
         queueEntriesRef.document(entryId)
             .update("orderStatus", status)
             .await()
+
+        val orderId = entry?.orderId.orEmpty()
+        if (orderId.isNotBlank()) {
+            updateOrderStatus(orderId, status.replaceFirstChar { it.uppercase() })
+        }
     }
 
     suspend fun updateOrderDetails(entryId: String, order: String) {

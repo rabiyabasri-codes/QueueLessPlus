@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@android:color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -62,11 +63,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEnableLocation"
+                    style="@style/QueueLess.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Enable Location"
-                    app:cornerRadius="12dp"
                     app:icon="@drawable/ic_location"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp" />
@@ -135,16 +136,15 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnJoinQueue"
+            style="@style/QueueLess.Button"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginBottom="16dp"
-            android:text="Join Queue"
-            android:textSize="16sp"
-            app:cornerRadius="12dp" />
+            android:text="Join Queue" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnShowQR"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/QueueLess.Button.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -152,11 +152,19 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnShare"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/QueueLess.Button.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="Share Queue" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOpenChat"
+            style="@style/QueueLess.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Chat Support" />
 
         <TextView
             android:layout_width="match_parent"

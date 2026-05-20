@@ -1,7 +1,9 @@
 package com.queueless.plus.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,6 +17,7 @@ import com.queueless.plus.databinding.ActivityOrderBinding
 import com.queueless.plus.models.CartItem
 import com.queueless.plus.models.MenuItem
 import com.queueless.plus.models.Order
+import com.queueless.plus.models.QueueEntry
 import com.queueless.plus.utils.FirestoreRepository
 import com.queueless.plus.utils.SessionManager
 import com.queueless.plus.utils.toast
@@ -27,12 +30,30 @@ class OrderActivity : AppCompatActivity() {
 
     private var entryId: String = ""
     private var queueId: String = ""
+    private var editingOrderId: String? = null
+    private var paymentConfirmedMethod: String? = null
 
     private val cart = mutableListOf<CartItem>()
     private var latestMenu: List<MenuItem> = emptyList()
 
     private lateinit var cartAdapter: CartAdapter
     private lateinit var menuAdapter: MenuAdapter
+
+    private val paymentLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringExtra(PaymentActivity.EXTRA_PAYMENT_METHOD)?.let { method ->
+                paymentConfirmedMethod = method
+                toast("$method payment completed")
+            }
+        }
+    }
+
+    companion object {
+        const val EXTRA_PAYMENT_METHOD = "extra_payment_method"
+        const val EXTRA_PAYMENT_AMOUNT = "extra_payment_amount"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +74,9 @@ class OrderActivity : AppCompatActivity() {
         setupCart()
         setupSwipeToDelete()
         setupSearch()
+        setupPaymentSelection()
 
+        loadExistingOrder()
         updateTotal()
 
         binding.btnPlaceOrder.setOnClickListener {
@@ -115,6 +138,63 @@ class OrderActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupPaymentSelection() {
+        binding.paymentMethodGroup.setOnCheckedChangeListener { _, checkedId ->
+            val selectedMethod = when (checkedId) {
+                binding.rbUPI.id -> "UPI / Wallet"
+                binding.rbCard.id -> "Card Payment"
+                else -> "Cash on Delivery"
+            }
+
+            if (selectedMethod != "Cash on Delivery") {
+                openPaymentPage(selectedMethod, cart.sumOf { it.price * it.quantity })
+            } else {
+                paymentConfirmedMethod = null
+            }
+        }
+    }
+
+    private fun openPaymentPage(method: String, amount: Int) {
+        val intent = Intent(this, PaymentActivity::class.java).apply {
+            putExtra(PaymentActivity.EXTRA_PAYMENT_METHOD, method)
+            putExtra(PaymentActivity.EXTRA_PAYMENT_AMOUNT, amount)
+        }
+        paymentLauncher.launch(intent)
+    }
+
+    private fun loadExistingOrder() {
+        if (entryId.isBlank()) return
+
+        lifecycleScope.launch {
+            try {
+                val order = FirestoreRepository.getOrderForEntry(entryId)
+                if (order != null) {
+                    editingOrderId = order.orderId
+                    paymentConfirmedMethod = if (order.paymentMethod != "Cash on Delivery") order.paymentMethod else null
+                    parseOrderItems(order.items)
+                    binding.btnPlaceOrder.text = "Update Order"
+                    updateTotal()
+                }
+            } catch (_: Exception) {
+                // Ignore if no existing order is found
+            }
+        }
+    }
+
+    private fun parseOrderItems(items: String) {
+        cart.clear()
+        items.lines().forEach { line ->
+            val parts = line.trim().split(" x")
+            if (parts.size == 2) {
+                val name = parts[0].trim()
+                val quantity = parts[1].toIntOrNull() ?: 1
+                val item = latestMenu.find { it.name == name }
+                cart.add(CartItem(name, item?.price ?: 0, quantity))
+            }
+        }
+        cartAdapter.notifyDataSetChanged()
+    }
+
     private fun addToCart(item: MenuItem) {
 
         val existing = cart.find { it.name == item.name }
@@ -171,13 +251,7 @@ class OrderActivity : AppCompatActivity() {
             return
         }
 
-        binding.btnPlaceOrder.isEnabled = false
-
         val total = cart.sumOf { it.price * it.quantity }
-
-        val orderText = cart.joinToString("\n") {
-            "${it.name} x${it.quantity}"
-        }
 
         val selectedPaymentMethod = try {
             val radioButton = binding.paymentMethodGroup.findViewById<android.widget.RadioButton>(
@@ -188,22 +262,43 @@ class OrderActivity : AppCompatActivity() {
             "Cash on Delivery"
         }
 
+        if (selectedPaymentMethod != "Cash on Delivery" && paymentConfirmedMethod != selectedPaymentMethod) {
+            toast("Complete $selectedPaymentMethod payment first")
+            openPaymentPage(selectedPaymentMethod, total)
+            return
+        }
+
+        binding.btnPlaceOrder.isEnabled = false
+
+        val orderText = cart.joinToString("\n") {
+            "${it.name} x${it.quantity}"
+        }
+
         val detailedOrderText = "$orderText\nPayment: $selectedPaymentMethod"
 
         lifecycleScope.launch {
             try {
                 val order = Order(
+                    orderId = editingOrderId.orEmpty(),
                     userId = session.userId,
                     queueId = queueId,
                     items = orderText,
                     total = total,
                     paymentMethod = selectedPaymentMethod,
+                    status = "Placed",
                     timestamp = System.currentTimeMillis()
                 )
 
-                val orderId = FirestoreRepository.createOrder(order)
+                val orderId = if (editingOrderId.isNullOrBlank()) {
+                    FirestoreRepository.createOrder(order)
+                } else {
+                    FirestoreRepository.updateOrder(order)
+                    editingOrderId!!
+                }
+
                 FirestoreRepository.updateOrderDetails(entryId, detailedOrderText)
                 FirestoreRepository.attachOrderToEntry(entryId, orderId)
+                FirestoreRepository.updateQueueEntryOrderStatus(entryId, QueueEntry.ORDER_WAITING)
 
                 // Add loyalty points
                 FirestoreRepository.addUserPoints(session.userId, 10) // 10 points per order

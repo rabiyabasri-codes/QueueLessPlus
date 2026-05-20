@@ -12,10 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Item"
-        android:textColor="@android:color/black"/>
+        android:textColor="@color/colorTextPrimary"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMinus"
+        style="@style/QueueLess.Button.Outlined"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:text="-"/>
@@ -27,8 +28,9 @@
         android:gravity="center"
         android:text="1"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPlus"
+        style="@style/QueueLess.Button.Outlined"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:text="+"/>
