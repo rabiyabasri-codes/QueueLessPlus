@@ -165,8 +165,8 @@ class UserStatusActivity : AppCompatActivity() {
         }
 
         // 🍔 Order
-        binding.tvOrder.text =
-            "Order: ${if (entry.orderDetails.isEmpty()) "Not placed" else entry.orderDetails}"
+        val orderText = entry.orderDetails.trim().takeIf { it.isNotBlank() } ?: "Not placed"
+        binding.tvOrder.text = "Order: $orderText"
 
         // 📦 Status
         if (entry.status == QueueEntry.STATUS_COMPLETED || entry.orderStatus == QueueEntry.ORDER_COMPLETED) {

@@ -40,11 +40,6 @@ class ProfileActivity : AppCompatActivity() {
 
         loadUserProfile()
 
-        binding.switchDarkMode.setOnCheckedChangeListener { _, checked ->
-            session.isDarkMode = checked
-            recreate()
-        }
-
         binding.btnSaveProfile.setOnClickListener { saveProfile() }
         binding.btnChangeAvatar.setOnClickListener { openImagePicker() }
         binding.btnOpenNotificationCenter.setOnClickListener {
@@ -83,7 +78,6 @@ class ProfileActivity : AppCompatActivity() {
                             .into(binding.ivAvatar)
                     }
                 }
-                binding.switchDarkMode.isChecked = session.isDarkMode
                 binding.spinnerLanguage.setSelection(if (getCurrentLanguage() == "hi") 1 else 0)
             } catch (e: Exception) {
                 toast("Failed to load profile: ${e.message}")

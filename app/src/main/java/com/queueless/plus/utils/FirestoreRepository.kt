@@ -365,10 +365,12 @@ object FirestoreRepository {
         val cutoffTime = Timestamp(startOfDayMillis / 1000, ((startOfDayMillis % 1000) * 1_000_000).toInt())
         val snap = queueEntriesRef
             .whereEqualTo("status", QueueEntry.STATUS_COMPLETED)
-            .whereGreaterThanOrEqualTo("timestamp", cutoffTime)
             .get()
             .await()
-        return snap.size()
+
+        return snap.documents
+            .mapNotNull { it.toObject(QueueEntry::class.java) }
+            .count { it.timestamp.toDate().time >= cutoffTime.toDate().time }
     }
 
     // ═════════ LOGIC ═════════

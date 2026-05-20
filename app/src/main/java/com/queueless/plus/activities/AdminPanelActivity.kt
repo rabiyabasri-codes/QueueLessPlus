@@ -46,13 +46,6 @@ class AdminPanelActivity : AppCompatActivity() {
         supportActionBar?.title = "Admin Panel"
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        binding.switchDarkMode.isChecked = session.isDarkMode
-        binding.switchDarkMode.setOnCheckedChangeListener { _, checked ->
-            session.isDarkMode = checked
-            ThemeUtils.applyTheme(this, session)
-            delegate.applyDayNight()
-        }
-
         setupRecyclerView()
 
         binding.fabCreateQueue.setOnClickListener {
@@ -65,6 +58,10 @@ class AdminPanelActivity : AppCompatActivity() {
 
         binding.btnAnalytics.setOnClickListener {
             startActivity(Intent(this, AdminAnalyticsActivity::class.java))
+        }
+
+        binding.btnScanQr.setOnClickListener {
+            startActivity(Intent(this, QRScanActivity::class.java))
         }
 
         binding.btnViewUserDashboard.setOnClickListener {

@@ -301,60 +301,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/QueueLess.Card"
-                    android:layout_marginTop="14dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="18dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Quick actions"
-                            android:textColor="@color/colorTextPrimary"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="12dp">
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnCreateQueue"
-                                style="@style/QueueLess.Button"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Create" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnManageQueues"
-                                style="@style/QueueLess.Button"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_weight="1"
-                                android:text="Manage" />
-                        </LinearLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnViewOrders"
-                            style="@style/QueueLess.Button.Outlined"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="View orders" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
                 <TextView
                     android:id="@+id/tvAvailableHeader"
                     android:layout_width="match_parent"
