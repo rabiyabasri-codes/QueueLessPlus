@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Brand Colors -->
-    <color name="colorPrimary">#6A1B9A</color>
-    <color name="colorPrimaryDark">#4A148C</color>
-    <color name="colorPrimaryLight">#8E24AA</color>
-    <color name="colorAccent">#FF7043</color>
+    <color name="colorPrimary">#1565C0</color>
+    <color name="colorPrimaryDark">#0D47A1</color>
+    <color name="colorPrimaryLight">#5E92F3</color>
+    <color name="colorAccent">#26C6DA</color>
 
     <!-- Text Colors -->
-    <color name="colorTextPrimary">#000000</color>
-    <color name="colorTextSecondary">#666666</color>
-    <color name="text_secondary">#666666</color>
-    <color name="colorTextHint">#BDBDBD</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#616161</color>
+    <color name="text_secondary">#616161</color>
+    <color name="colorTextHint">#9E9E9E</color>
 
     <!-- Semantic Colors -->
-    <color name="colorSuccess">#4CAF50</color>
-    <color name="colorWarning">#FFC107</color>
-    <color name="colorError">#F44336</color>
-    <color name="colorInfo">#2196F3</color>
+    <color name="colorSuccess">#43A047</color>
+    <color name="colorWarning">#FFB300</color>
+    <color name="colorError">#D32F2F</color>
+    <color name="colorInfo">#0288D1</color>
 
     <!-- Surface Colors -->
     <color name="white">#FFFFFF</color>
-    <color name="background">#F3E5F5</color>
-    <color name="colorBackground">#F3E5F5</color>
+    <color name="background">#E3F2FD</color>
+    <color name="colorBackground">#E3F2FD</color>
     <color name="colorSurface">#FFFFFF</color>
-    <color name="colorDivider">#D1C4E9</color>
+    <color name="colorDivider">#BBDEFB</color>
 
     <!-- Primary Colors -->
     <color name="primary">#6A1B9A</color>

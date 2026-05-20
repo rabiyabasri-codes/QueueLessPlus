@@ -1,6 +1,6 @@
 # QueueLess+ – Smart Virtual Queue Management System
 
-A full-stack Android application that eliminates physical waiting lines by allowing users to join and manage queues digitally with real-time updates, admin QR sharing, and dark mode support.
+A full-stack Android application that eliminates physical waiting lines by allowing users to join and manage queues digitally with real-time updates, admin QR sharing, dark mode support, a refreshed scrollable admin UI, and a modern blue accent palette.
 
 ---
 

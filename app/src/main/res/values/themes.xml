@@ -15,7 +15,7 @@
         <!-- Background & surface -->
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
-        <item name="colorSurfaceVariant">#EDE7F6</item>
+        <item name="colorSurfaceVariant">#BBDEFB</item>
 
         <!-- Text colors -->
         <item name="android:textColor">@color/colorTextPrimary</item>

@@ -12,30 +12,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="18dp"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/tvQueueName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorTextPrimary" />
 
         <TextView
             android:id="@+id/tvLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="13sp" />
+            android:layout_marginTop="6dp"
+            android:textColor="@color/colorInfo"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvServiceTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
             android:textColor="@color/colorTextSecondary"
             android:textSize="13sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGenerateQr"
+            style="@style/QueueLess.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Generate QR"
+            app:cornerRadius="12dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,31 +56,21 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnManage"
+                style="@style/QueueLess.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Manage"
-                app:cornerRadius="8dp" />
+                android:text="Manage" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDelete"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/QueueLess.Button.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Delete"
-                android:textColor="@color/colorError"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/colorError" />
+                android:textColor="@color/colorError" />
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGenerateQr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Generate QR Code"
-            app:cornerRadius="8dp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
