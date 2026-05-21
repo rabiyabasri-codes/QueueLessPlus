@@ -192,10 +192,22 @@ class ManageQueueActivity : AppCompatActivity() {
     private fun markServed(entry: QueueEntry) {
         lifecycleScope.launch {
             try {
+                FirestoreRepository.updateQueueEntryOrderStatus(entry.entryId, QueueEntry.ORDER_COMPLETED)
                 FirestoreRepository.updateEntryStatus(
                     entry.entryId,
                     QueueEntry.STATUS_COMPLETED
                 )
+
+                if (entry.orderId.isNotBlank()) {
+                    FirestoreRepository.updateOrderStatus(entry.orderId, "Completed")
+                }
+
+                FirestoreRepository.pushNotification(
+                    userId = entry.userId,
+                    title = "Order completed",
+                    message = "Your order is completed and received."
+                )
+
                 toast("${entry.userName} served")
             } catch (e: Exception) {
                 toast("Error: ${e.message}")

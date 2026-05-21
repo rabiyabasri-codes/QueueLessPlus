@@ -74,7 +74,12 @@ class LoginActivity : AppCompatActivity() {
                 // ✅ SUCCESS
                 toast("Login successful 🎉")
 
-                startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+                val destination = if (session.isAdmin) {
+                    AdminPanelActivity::class.java
+                } else {
+                    DashboardActivity::class.java
+                }
+                startActivity(Intent(this@LoginActivity, destination))
                 finish()
 
             } catch (e: Exception) {

@@ -3,4 +3,7 @@
     android:shape="rectangle">
     <solid android:color="@color/colorBadgeBackground" />
     <corners android:radius="50dp" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/colorPrimary" />
 </shape>

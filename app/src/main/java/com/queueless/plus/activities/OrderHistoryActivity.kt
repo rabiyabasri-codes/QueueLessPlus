@@ -34,13 +34,19 @@ class OrderHistoryActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val orders = FirestoreRepository.getOrdersForUser(session.userId)
-                binding.rvOrders.adapter = OrderHistoryAdapter(orders) { order ->
-                    openReviewDialog(order)
-                }
                 if (orders.isEmpty()) {
-                    toast("No past orders found.")
+                    binding.rvOrders.visibility = android.view.View.GONE
+                    binding.tvEmpty.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvEmpty.visibility = android.view.View.GONE
+                    binding.rvOrders.visibility = android.view.View.VISIBLE
+                    binding.rvOrders.adapter = OrderHistoryAdapter(orders) { order ->
+                        openReviewDialog(order)
+                    }
                 }
             } catch (e: Exception) {
+                binding.rvOrders.visibility = android.view.View.GONE
+                binding.tvEmpty.visibility = android.view.View.VISIBLE
                 toast("Could not load order history: ${e.message}")
             }
         }

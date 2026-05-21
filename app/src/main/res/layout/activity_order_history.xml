@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,6 +12,16 @@
         android:text="Order History"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No order history yet."
+        android:textColor="@color/colorTextSecondary"
+        android:gravity="center"
+        android:visibility="gone"
         android:layout_marginBottom="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:fillViewport="true">
 
     <LinearLayout
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +26,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilQueueName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/QueueLess.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -40,7 +41,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDescription"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/QueueLess.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -55,7 +56,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLocation"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/QueueLess.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -70,7 +71,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilServiceTime"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/QueueLess.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
@@ -94,11 +95,10 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCreateQueue"
+                style="@style/QueueLess.Button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Create Queue"
-                android:textSize="16sp"
-                app:cornerRadius="12dp" />
+                android:text="Create Queue" />
 
         </LinearLayout>
     </LinearLayout>

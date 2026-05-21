@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.firebase.Timestamp
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
@@ -67,6 +68,9 @@ class QueueDetailActivity : AppCompatActivity() {
         }
         binding.btnShare.setOnClickListener {
             shareQueue()
+        }
+        binding.btnOpenChat.setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
         }
     }
 
@@ -174,17 +178,28 @@ class QueueDetailActivity : AppCompatActivity() {
 
     private fun fetchCurrentLocation() {
         try {
-            fusedLocationClient.lastLocation
+            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener { location ->
                     if (location != null) {
                         binding.tvYourLocation.text =
                             "Your location: ${String.format("%.4f", location.latitude)}, ${String.format("%.4f", location.longitude)}"
                     } else {
-                        toast("Unable to get location. Try again.")
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { last ->
+                                if (last != null) {
+                                    binding.tvYourLocation.text =
+                                        "Your location: ${String.format("%.4f", last.latitude)}, ${String.format("%.4f", last.longitude)}"
+                                } else {
+                                    toast("Unable to get location. Please ensure GPS is enabled.")
+                                }
+                            }
+                            .addOnFailureListener {
+                                toast("Unable to get location. Please ensure GPS is enabled.")
+                            }
                     }
                 }
                 .addOnFailureListener {
-                    toast("Location request failed")
+                    toast("Location request failed. Please enable location services.")
                 }
         } catch (e: Exception) {
             toast("Location error: ${e.message}")
@@ -226,17 +241,21 @@ class QueueDetailActivity : AppCompatActivity() {
                 )
 
                 val entryId = FirestoreRepository.joinQueue(entry)
-                FirestoreRepository.pushNotification(
-                    userId = session.userId,
-                    title = "Queue joined",
-                    message = "You joined ${q.queueName}. Track your live status now."
-                )
+                runCatching {
+                    FirestoreRepository.pushNotification(
+                        userId = session.userId,
+                        title = "Queue joined",
+                        message = "You joined ${q.queueName}. Track your live status now."
+                    )
+                }
 
                 // Schedule notification for when turn is approaching
-                val estimatedWait = FirestoreRepository.getEstimatedWaitTime(session.userId, q)
-                val notificationDelay = (estimatedWait * 0.8).toInt() // Notify 80% through wait time
-                if (notificationDelay > 0) {
-                    NotificationScheduler(this@QueueDetailActivity).scheduleQueueNotification(q.queueName, notificationDelay)
+                runCatching {
+                    val estimatedWait = FirestoreRepository.getEstimatedWaitTime(session.userId, q)
+                    val notificationDelay = (estimatedWait * 0.8).toInt() // Notify 80% through wait time
+                    if (notificationDelay > 0) {
+                        NotificationScheduler(this@QueueDetailActivity).scheduleQueueNotification(q.queueName, notificationDelay)
+                    }
                 }
 
                 currentEntryId = entryId
@@ -244,9 +263,9 @@ class QueueDetailActivity : AppCompatActivity() {
 
                 toast("Joined queue!")
 
-                val intent = Intent(this@QueueDetailActivity, OrderActivity::class.java).apply {
-                    putExtra("ENTRY_ID", entryId)
-                    putExtra("QUEUE_ID", q.queueId)
+                val intent = Intent(this@QueueDetailActivity, UserStatusActivity::class.java).apply {
+                    putExtra(UserStatusActivity.EXTRA_ENTRY_ID, entryId)
+                    putExtra(UserStatusActivity.EXTRA_QUEUE_ID, q.queueId)
                 }
 
                 startActivity(intent)

@@ -16,9 +16,11 @@ import com.queueless.plus.adapters.AdminQueueAdapter
 import com.queueless.plus.databinding.ActivityAdminPanelBinding
 import com.queueless.plus.models.Queue
 import com.queueless.plus.utils.FirestoreRepository
+import com.queueless.plus.utils.AuthManager
 import com.queueless.plus.utils.SessionManager
 import com.queueless.plus.utils.ThemeUtils
 import com.queueless.plus.utils.hide
+import com.queueless.plus.utils.requireAdminAccess
 import com.queueless.plus.utils.show
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,22 +40,41 @@ class AdminPanelActivity : AppCompatActivity() {
 
         binding = ActivityAdminPanelBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (!requireAdminAccess(session)) return
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = "Admin Panel"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        binding.switchDarkMode.isChecked = session.isDarkMode
-        binding.switchDarkMode.setOnCheckedChangeListener { _, checked ->
-            session.isDarkMode = checked
-            ThemeUtils.applyTheme(this, session)
-            delegate.applyDayNight()
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         setupRecyclerView()
 
         binding.fabCreateQueue.setOnClickListener {
             startActivity(Intent(this, CreateQueueActivity::class.java))
+        }
+
+        binding.btnManageMenu.setOnClickListener {
+            startActivity(Intent(this, AdminMenuActivity::class.java))
+        }
+
+        binding.btnAnalytics.setOnClickListener {
+            startActivity(Intent(this, AdminAnalyticsActivity::class.java))
+        }
+
+        binding.btnScanQr.setOnClickListener {
+            startActivity(Intent(this, QRScanActivity::class.java))
+        }
+
+        binding.btnViewUserDashboard.setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java))
+        }
+
+        binding.btnAdminLogout.setOnClickListener {
+            AuthManager.logout()
+            session.clear()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
 
         attachQueueListener()

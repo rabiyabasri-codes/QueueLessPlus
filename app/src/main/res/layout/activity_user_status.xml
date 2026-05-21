@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 📜 Content -->
@@ -120,7 +120,7 @@
                         android:text="—"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@color/colorTextPrimary"/>
 
                     <!-- Countdown -->
                     <TextView
@@ -137,7 +137,7 @@
                         android:text="00:00"
                         android:textSize="30sp"
                         android:textStyle="bold"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/colorTextPrimary"
                         android:typeface="monospace"/>
 
                     <!-- 🍔 Order Button -->
@@ -162,14 +162,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="Order: Not placed"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@color/colorTextPrimary"/>
 
                     <TextView
                         android:id="@+id/tvOrderStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Status: waiting"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@color/colorTextPrimary"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -177,7 +177,7 @@
             <!-- 🚪 Leave -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLeaveQueue"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/QueueLess.Button.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:text="Leave Queue"

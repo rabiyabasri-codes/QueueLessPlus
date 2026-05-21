@@ -19,8 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDelete"
+        style="@style/QueueLess.Button.Outlined"
         android:text="Delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

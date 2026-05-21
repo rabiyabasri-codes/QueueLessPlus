@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <!-- Title -->
     <TextView
@@ -15,8 +16,9 @@
         android:layout_height="wrap_content"/>
 
     <!-- Scan Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnScan"
+        style="@style/QueueLess.Button"
         android:text="Start Scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -31,8 +33,9 @@
         android:layout_height="wrap_content"/>
 
     <!-- Mark Ready -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMarkReady"
+        style="@style/QueueLess.Button"
         android:text="Mark Order Ready"
         android:visibility="gone"
         android:layout_marginTop="20dp"

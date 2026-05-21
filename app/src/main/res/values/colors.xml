@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Brand Colors -->
-    <color name="colorPrimary">#6A1B9A</color>
-    <color name="colorPrimaryDark">#4A148C</color>
-    <color name="colorPrimaryLight">#8E24AA</color>
-    <color name="colorAccent">#FF7043</color>
+    <color name="colorPrimary">#7E9D94</color>
+    <color name="primary">@color/colorPrimary</color>
+    <color name="colorPrimaryDark">#5D7D74</color>
+    <color name="colorPrimaryLight">#DDEBE5</color>
+    <color name="colorAccent">#E9BAC8</color>
+    <color name="colorAccentSoft">#F7E6EC</color>
+    <color name="colorLavender">#C9C1E6</color>
+    <color name="colorLavenderSoft">#ECE8F8</color>
 
     <!-- Text Colors -->
-    <color name="colorTextPrimary">#000000</color>
-    <color name="colorTextSecondary">#666666</color>
-    <color name="text_secondary">#666666</color>
-    <color name="colorTextHint">#BDBDBD</color>
+    <color name="colorTextPrimary">#2F3A35</color>
+    <color name="colorTextSecondary">#6F7B73</color>
+    <color name="text_secondary">#6F7B73</color>
+    <color name="colorTextHint">#9AA79F</color>
 
     <!-- Semantic Colors -->
-    <color name="colorSuccess">#4CAF50</color>
-    <color name="colorWarning">#FFC107</color>
-    <color name="colorError">#F44336</color>
-    <color name="colorInfo">#2196F3</color>
+    <color name="colorSuccess">#82A992</color>
+    <color name="colorWarning">#D7B778</color>
+    <color name="colorError">#C8717B</color>
+    <color name="colorInfo">#8CA9BB</color>
 
     <!-- Surface Colors -->
     <color name="white">#FFFFFF</color>
-    <color name="background">#F3E5F5</color>
-    <color name="colorBackground">#F3E5F5</color>
+    <color name="background">#EEF5F1</color>
+    <color name="colorBackground">#EEF5F1</color>
     <color name="colorSurface">#FFFFFF</color>
-    <color name="colorDivider">#D1C4E9</color>
-
-    <!-- Primary Colors -->
-    <color name="primary">#6A1B9A</color>
+    <color name="colorSurfaceVariant">#F7F2F5</color>
+    <color name="colorDivider">#D9E2DD</color>
 
     <!-- Badge / Chip -->
-    <color name="colorBadgeBackground">#E1BEE7</color>
-    <color name="colorBadgeText">#4A148C</color>
+    <color name="colorBadgeBackground">#F4DFE6</color>
+    <color name="colorBadgeText">#7B5965</color>
 
     <!-- Position Circle -->
-    <color name="colorPositionBg">#7B1FA2</color>
+    <color name="colorPositionBg">#C9C1E6</color>
 </resources>
